@@ -52,6 +52,7 @@ class _SignInState extends State<SignIn> {
     final userProvider = Provider.of<UserProvider>(context);
     final width = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -71,9 +72,6 @@ class _SignInState extends State<SignIn> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(
-                child: Container(),
-              ),
               Text(
                 'Sign in',
                 style: Theme.of(context)
@@ -81,75 +79,79 @@ class _SignInState extends State<SignIn> {
                     .headlineLarge
                     ?.copyWith(color: Colors.black.withAlpha(200)),
               ),
+              Expanded(
+                  child: Column(children: [
+                    // email
+                    AppTextField(
+                      height: 80.0,
+                      label: 'Email',
+                      hint: 'Email...',
+                      controller: emailController,
+                      icon: Icons.alternate_email,
+                      keyboardType: TextInputType.emailAddress,
+                      focusNode: _emailFocusNode,
+                      errorText: emailError,
+                      onChanged: (value) {
+                        if (emailError != null && regexExp.hasMatch(value)) {
+                          setState(() {
+                            emailError = null;
+                          });
+                        }
+                      },
+                      onSubmitted: (value) {
+                        _emailFocusNode.unfocus();
+                        validateEmail(value);
+                      },
+                    ),
+                    // password
+                    AppTextField(
+                      height: 80.0,
+                      label: 'Password',
+                      hint: 'Password...',
+                      controller: passwordController,
+                      icon: Icons.password,
+                      keyboardType: TextInputType.emailAddress,
+                      focusNode: _passwordFocusNode,
+                      errorText: emailError,
+                      onChanged: (value) {},
+                      onSubmitted: (value) {
+                        _passwordFocusNode.unfocus();
+                      },
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          'Forgot Password?',
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodySmall
+                              ?.copyWith(fontWeight: FontWeight.bold),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    // the continue button
+                    AppButton(
+                        width: width,
+                        height: Theme.of(context).buttonTheme.height,
+                        title: 'Continue',
+                        color: Theme.of(context).buttonTheme.colorScheme!.primary,
+                        isEnabled: emailError == null,
+                        isLoading: false,
+                        loadingText: 'Loading...',
+                        onPressed: () {
+                          bool result = validateEmail(emailController.text);
+                          if (!result) return;
+                          userProvider.setUser('1', emailController.text);
+                          Navigator.pushNamed(context, OnBoarding.routeName);
+                        }),
+                  ])),
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  AppTextField(
-                    height: 60.0,
-                    label: 'Email',
-                    hint: 'Email...',
-                    controller: emailController,
-                    icon: Icons.alternate_email,
-                    keyboardType: TextInputType.emailAddress,
-                    focusNode: _emailFocusNode,
-                    errorText: emailError,
-                    onChanged: (value) {
-                      if (emailError != null && regexExp.hasMatch(value)) {
-                        setState(() {
-                          emailError = null;
-                        });
-                      }
-                    },
-                    onSubmitted: (value) {
-                      _emailFocusNode.unfocus();
-                      validateEmail(value);
-                    },
-                  ),
-                  AppTextField(
-                    height: 60.0,
-                    label: 'Password',
-                    hint: 'Password...',
-                    controller: passwordController,
-                    icon: Icons.password,
-                    keyboardType: TextInputType.emailAddress,
-                    focusNode: _passwordFocusNode,
-                    errorText: emailError,
-                    onChanged: (value) {
-                    },
-                    onSubmitted: (value) {
-                      _passwordFocusNode.unfocus();
-                    },
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        'Forgot Password?',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  // the Continue button
-                  AppButton(
-                      width: width,
-                      height: Theme.of(context).buttonTheme.height,
-                      title: 'Continue',
-                      color: Theme.of(context).buttonTheme.colorScheme!.primary,
-                      isEnabled: emailError == null,
-                      isLoading: false,
-                      loadingText: 'Loading...',
-                      onPressed: () {
-                        bool result = validateEmail(emailController.text);
-                        if (!result) return;
-                        userProvider.setUser('1', emailController.text);
-                        Navigator.pushNamed(context, OnBoarding.routeName);
-                      }),
                   const SizedBox(
                     height: 10,
                   ),
@@ -183,8 +185,10 @@ class _SignInState extends State<SignIn> {
                       height: Theme.of(context).buttonTheme.height,
                       leadingAsset: 'lib/assets/icons/google.svg',
                       title: 'Login in with Google',
-                      color:
-                          Theme.of(context).buttonTheme.colorScheme!.secondary,
+                      color: Theme.of(context)
+                          .buttonTheme
+                          .colorScheme!
+                          .secondary,
                       isEnabled: emailError == null,
                       isLoading: false,
                       loadingText: 'Loading...',
@@ -209,7 +213,8 @@ class _SignInState extends State<SignIn> {
                             ?.copyWith(fontWeight: FontWeight.bold),
                       ),
                       onTap: () {
-                        Navigator.of(context).pushReplacementNamed(SignUpStepOne.routeName);
+                        Navigator.of(context)
+                            .pushReplacementNamed(SignUpStepOne.routeName);
                       },
                     )
                   ],

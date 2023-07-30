@@ -33,31 +33,47 @@ class _SignUpStepOneState extends State<SignUpStepOne> {
     super.dispose();
   }
 
-  Future<bool> validateEmail(String value) async {
-    setState(() {
-      _isLoading = true;
-    });
-    // match the email with the regex and set the error, if required
-    bool matchedRegex = regexExp.hasMatch(value);
-    bool emailInUseAlready = await Provider.of<UserProvider>(context, listen: false)
-        .emailAlreadyExists(value)
-        .then((value) => value);
-    print('emailInUseAlready: ${emailInUseAlready}');
+  void stopLoader() {
     setState(() {
       _isLoading = false;
     });
-    print('matchedRegex: ${matchedRegex}, emailInUseAlready: ${emailInUseAlready}');
-    if (!matchedRegex || emailInUseAlready) {
+  }
+
+  void startLoader() {
+    setState(() {
+      _isLoading = true;
+    });
+  }
+
+  Future<bool> validateEmail(String value) async {
+    startLoader();
+    // match the email with the regex and set error
+    bool matchedRegex = regexExp.hasMatch(value);
+    if (!matchedRegex) {
+      stopLoader();
       setState(() {
         emailError = 'Please enter a valid email';
       });
-      return matchedRegex && emailInUseAlready;
+      return matchedRegex;
+    }
+
+    bool emailInUseAlready = await Provider.of<UserProvider>(context, listen: false)
+        .emailAlreadyExists(value)
+        .then((value) => value);
+    stopLoader();
+    print('emailInUseAlready: $emailInUseAlready');
+    // if the email is already in use, show the error
+    if (emailInUseAlready) {
+      setState(() {
+        emailError = 'Please enter a valid email';
+      });
+      return emailInUseAlready;
     }
     // else, remove it if regex is satisfied
     setState(() {
       emailError = null;
     });
-    return matchedRegex && emailInUseAlready;
+    return true;
   }
 
   @override
@@ -66,6 +82,7 @@ class _SignUpStepOneState extends State<SignUpStepOne> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -112,10 +129,19 @@ class _SignUpStepOneState extends State<SignUpStepOne> {
                   },
                   onSubmitted: (value) {
                     _emailFocusNode.unfocus();
+                    // make sure the field isn't empty
+                    if (value.isEmpty) {
+                      setState(() {
+                        emailError = 'Please enter a valid email';
+                      });
+                      return;
+                    }
                     validateEmail(value);
                   },
                 ),
-                Expanded(child: Container()),
+                const SizedBox(
+                  height: 20,
+                ),
                 AppButton(
                     width: width,
                     height: Theme.of(context).buttonTheme.height,
@@ -125,13 +151,27 @@ class _SignUpStepOneState extends State<SignUpStepOne> {
                     isLoading: _isLoading,
                     loadingText: 'Loading...',
                     onPressed: () {
+                      // if there is an error, don't allow tapping
+                      if (emailError != null) {
+                        return;
+                      }
+                      // make sure the field isn't empty
+                      if (emailController.text.isEmpty) {
+                        setState(() {
+                          emailError = 'Please enter a valid email';
+                        });
+                        return;
+                      }
+                      _emailFocusNode.unfocus();
+                      // if no error and non empty, validate the email
                       validateEmail(emailController.text).then((value) {
-                        print('value: ${value}');
-                        if (value) return;
+                        print('value :==> $value');
+                        if (!value) return;
                         userProvider.setUser('1', emailController.text);
                         Navigator.pushNamed(context, SignUpStepTwo.routeName);
                       });
                     }),
+                Expanded(child: Container()),
                 const SizedBox(
                   height: 5,
                 ),

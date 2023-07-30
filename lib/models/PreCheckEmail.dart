@@ -34,18 +34,18 @@ class PreCheckEmailResponse {
   set userStatus(String? userStatus) => _userStatus = userStatus;
 
   PreCheckEmailResponse.fromJson(Map<String, dynamic> json) {
-    _username = json['username'];
-    _userCreateDate = json['userCreateDate'];
-    _enabled = json['enabled'];
-    _userStatus = json['userStatus'];
+    _username = json['Username'];
+    _userCreateDate = json['UserCreateDate'];
+    _enabled = json['Enabled'];
+    _userStatus = json['UserStatus'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['username'] = this._username;
-    data['userCreateDate'] = this._userCreateDate;
-    data['enabled'] = this._enabled;
-    data['userStatus'] = this._userStatus;
+    data['Username'] = this._username;
+    data['UserCreateDate'] = this._userCreateDate;
+    data['Enabled'] = this._enabled;
+    data['UserStatus'] = this._userStatus;
     return data;
   }
 }

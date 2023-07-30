@@ -3,8 +3,6 @@ import 'package:meet_muslims_client/components/button.dart';
 import 'package:meet_muslims_client/pages/sign_in.dart';
 import 'package:meet_muslims_client/pages/sign_up_step_one.dart';
 
-import 'commons.dart';
-
 class Landing extends StatefulWidget {
   static const routeName = '/landing';
   const Landing({super.key});
@@ -37,7 +35,7 @@ class _LandingState extends State<Landing> {
                     Navigator.pushNamed(context, SignIn.routeName);
                   }
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               AppButton(
                   width: width,
                   height: height,

@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         SignIn.routeName: (context) => const SignIn(),
         SignUpStepOne.routeName: (context) => const SignUpStepOne(),
         SignUpStepTwo.routeName: (context) => const SignUpStepTwo(),
-        OnBoarding.routeName: (context) => const OnBoarding()
+        OnBoarding.routeName: (context) => const OnBoarding(),
       },
     );
   }

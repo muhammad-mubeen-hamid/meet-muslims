@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:meet_muslims_client/components/button.dart';
 import 'package:meet_muslims_client/components/text_field.dart';
+import 'package:meet_muslims_client/models/error.dart';
 import 'package:meet_muslims_client/pages/on_boarding.dart';
 import 'package:meet_muslims_client/pages/sign_in.dart';
 import 'package:provider/provider.dart';
@@ -36,36 +39,31 @@ class _SignUpStepTwoState extends State<SignUpStepTwo> {
     super.dispose();
   }
 
-  Future<bool> validateEmail(String value) async {
-    setState(() {
-      _isLoading = true;
-    });
-    // match the email with the regex and set the error, if required
-    bool matchedRegex = regexExp.hasMatch(value);
-    bool emailInUseAlready = await Provider.of<UserProvider>(context, listen: false)
-        .emailAlreadyExists(value)
-        .then((value) => value);
-    print('emailInUseAlready: ${emailInUseAlready}');
+  void stopLoader() {
     setState(() {
       _isLoading = false;
     });
-    print('matchedRegex: ${matchedRegex}, emailInUseAlready: ${emailInUseAlready}');
-    if (!matchedRegex || emailInUseAlready) {
-      setState(() {
-        emailError = 'Please enter a valid email';
-      });
-      return matchedRegex && emailInUseAlready;
-    }
-    // else, remove it if regex is satisfied
+  }
+
+  void startLoader() {
     setState(() {
-      emailError = null;
+      _isLoading = true;
     });
-    return matchedRegex && emailInUseAlready;
+  }
+
+  Future<bool> registerUser(String email) async {
+    startLoader();
+    AppNetworkResponse registered = await Provider.of<UserProvider>(context, listen: false)
+        .registerUser(email, _passwordController.text, _contactNumberController.text)
+        .then((value) => value);
+    stopLoader();
+    print(registered.httpCode);
+    return registered.message == 'User registered successfully';
   }
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = Provider.of<UserProvider>(context);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
@@ -130,6 +128,11 @@ class _SignUpStepTwoState extends State<SignUpStepTwo> {
                     isLoading: _isLoading,
                     loadingText: 'Loading...',
                     onPressed: () {
+                      registerUser(userProvider.email).then((value) {
+                        if (value) {
+                          Navigator.of(context).pushReplacementNamed(OnBoarding.routeName);
+                        }
+                      });
                     }),
                 SizedBox(
                   height: 40,
