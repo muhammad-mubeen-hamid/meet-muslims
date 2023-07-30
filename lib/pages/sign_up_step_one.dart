@@ -54,7 +54,7 @@ class _SignUpStepOneState extends State<SignUpStepOne> {
       setState(() {
         emailError = 'Please enter a valid email';
       });
-      return matchedRegex;
+      return false;
     }
 
     bool emailInUseAlready = await Provider.of<UserProvider>(context, listen: false)
@@ -67,7 +67,7 @@ class _SignUpStepOneState extends State<SignUpStepOne> {
       setState(() {
         emailError = 'Please enter a valid email';
       });
-      return emailInUseAlready;
+      return false;
     }
     // else, remove it if regex is satisfied
     setState(() {
@@ -165,6 +165,7 @@ class _SignUpStepOneState extends State<SignUpStepOne> {
                       _emailFocusNode.unfocus();
                       // if no error and non empty, validate the email
                       validateEmail(emailController.text).then((value) {
+                        // if value is true, it means the email is already in use
                         print('value :==> $value');
                         if (!value) return;
                         userProvider.setUser('1', emailController.text);
