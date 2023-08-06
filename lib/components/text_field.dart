@@ -8,6 +8,7 @@ class AppTextField extends StatefulWidget {
   final TextEditingController controller;
   final String? errorText;
   final TextInputType keyboardType;
+  final bool isEnabled;
   final FocusNode focusNode;
   final Function(PointerDownEvent)? onTapOutside;
   final Function()? onTap;
@@ -23,6 +24,7 @@ class AppTextField extends StatefulWidget {
     required this.controller,
     required this.focusNode,
     required this.keyboardType,
+    required this.isEnabled,
     this.errorText,
     this.onTapOutside,
     this.onTap,
@@ -60,6 +62,7 @@ class _AppTextFieldState extends State<AppTextField> {
     return SizedBox(
       height: widget.height,
       child: TextField(
+        enabled: widget.isEnabled,
         decoration: InputDecoration(
           hintText: widget.hint,
           prefixIcon: Icon(widget.icon, color: _iconColor,),

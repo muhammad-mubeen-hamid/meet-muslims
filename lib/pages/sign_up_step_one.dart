@@ -120,6 +120,7 @@ class _SignUpStepOneState extends State<SignUpStepOne> {
                   keyboardType: TextInputType.emailAddress,
                   focusNode: _emailFocusNode,
                   errorText: emailError,
+                  isEnabled: true,
                   onChanged: (value) {
                     if (emailError != null && regexExp.hasMatch(value)) {
                       setState(() {

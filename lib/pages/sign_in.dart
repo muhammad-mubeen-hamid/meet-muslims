@@ -91,6 +91,7 @@ class _SignInState extends State<SignIn> {
                       keyboardType: TextInputType.emailAddress,
                       focusNode: _emailFocusNode,
                       errorText: emailError,
+                      isEnabled: true,
                       onChanged: (value) {
                         if (emailError != null && regexExp.hasMatch(value)) {
                           setState(() {
@@ -113,6 +114,7 @@ class _SignInState extends State<SignIn> {
                       keyboardType: TextInputType.emailAddress,
                       focusNode: _passwordFocusNode,
                       errorText: emailError,
+                      isEnabled: true,
                       onChanged: (value) {},
                       onSubmitted: (value) {
                         _passwordFocusNode.unfocus();

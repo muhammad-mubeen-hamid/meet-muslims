@@ -85,6 +85,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     keyboardType: TextInputType.emailAddress,
                     focusNode: _fullNameFocusNode,
                     errorText: fullNameError,
+                    isEnabled: true,
                     onChanged: (value) {
                       if (fullNameError != null &&
                           fullNameController.text.isNotEmpty) {
@@ -103,6 +104,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     keyboardType: TextInputType.phone,
                     focusNode: _mobileFocusNode,
                     errorText: mobileNumberError,
+                    isEnabled: true,
                     onChanged: (value) {
                       if (mobileNumberError != null &&
                           numbersOnly.hasMatch(value)) {
@@ -122,6 +124,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     keyboardType: TextInputType.text,
                     focusNode: _passwordFocusNode,
                     errorText: passwordError,
+                    isEnabled: true,
                     onChanged: (value) {
                       if (passwordError != null &&
                           passwordController.text.isNotEmpty) {
@@ -141,6 +144,7 @@ class _OnBoardingState extends State<OnBoarding> {
                     keyboardType: TextInputType.text,
                     focusNode: _confirmPasswordFocusNode,
                     errorText: confirmPasswordError,
+                    isEnabled: true,
                     onChanged: (value) {
                       if (confirmPasswordError != null &&
                           confirmPasswordController.text.isNotEmpty &&

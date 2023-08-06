@@ -5,6 +5,7 @@ import 'package:meet_muslims_client/components/button.dart';
 import 'package:meet_muslims_client/components/text_field.dart';
 import 'package:meet_muslims_client/models/error.dart';
 import 'package:meet_muslims_client/pages/on_boarding.dart';
+import 'package:meet_muslims_client/pages/otp/phone.dart';
 import 'package:meet_muslims_client/pages/sign_in.dart';
 import 'package:provider/provider.dart';
 
@@ -104,6 +105,7 @@ class _SignUpStepTwoState extends State<SignUpStepTwo> {
                   keyboardType: TextInputType.visiblePassword,
                   focusNode: _passwordFocusNode,
                   errorText: emailError,
+                  isEnabled: true,
                   onChanged: (value) {}
                 ),
                 AppTextField(
@@ -115,6 +117,7 @@ class _SignUpStepTwoState extends State<SignUpStepTwo> {
                   keyboardType: TextInputType.phone,
                   focusNode: _contactNumberFocusNode,
                   errorText: emailError,
+                  isEnabled: true,
                   onChanged: (value) {
                   },
                 ),
@@ -130,7 +133,7 @@ class _SignUpStepTwoState extends State<SignUpStepTwo> {
                     onPressed: () {
                       registerUser(userProvider.email).then((value) {
                         if (value) {
-                          Navigator.of(context).pushReplacementNamed(OnBoarding.routeName);
+                          Navigator.of(context).pushReplacementNamed(PhoneOTP.routeName);
                         }
                       });
                     }),
