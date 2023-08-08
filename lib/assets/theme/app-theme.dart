@@ -8,7 +8,7 @@ class AppTheme {
       errorColor: Colors.red.shade900,
       buttonTheme: const ButtonThemeData(
           colorScheme: ColorScheme.light(
-            primary: Color.fromRGBO(38, 60, 243, 1.0),
+            primary: Color.fromRGBO(255, 165, 0, 1.0),
             secondary: Color.fromRGBO(227, 226, 226, 1.0),
           ),
           height: 60.0),

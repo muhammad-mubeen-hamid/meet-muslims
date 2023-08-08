@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:meet_muslims_client/components/button.dart';
 import 'package:meet_muslims_client/components/text_field.dart';
-import 'package:meet_muslims_client/models/error.dart';
+import 'package:meet_muslims_client/models/AppNetworkReponse.dart';
 import 'package:meet_muslims_client/pages/on_boarding.dart';
 import 'package:meet_muslims_client/pages/otp/phone.dart';
 import 'package:meet_muslims_client/pages/sign_in.dart';

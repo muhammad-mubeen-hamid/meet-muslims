@@ -7,6 +7,7 @@ import 'package:meet_muslims_client/pages/sign_up_step_one.dart';
 import 'package:meet_muslims_client/pages/sign_up_step_two.dart';
 import 'package:meet_muslims_client/provider/theme_provider.dart';
 import 'package:meet_muslims_client/provider/user_provider.dart';
+import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -32,18 +33,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Meet Muslims',
-      theme: Provider.of<ThemeProvider>(context).getTheme(),
-      initialRoute: Landing.routeName,
-      routes: {
-        Landing.routeName: (context) => const Landing(),
-        SignIn.routeName: (context) => const SignIn(),
-        SignUpStepOne.routeName: (context) => const SignUpStepOne(),
-        SignUpStepTwo.routeName: (context) => const SignUpStepTwo(),
-        PhoneOTP.routeName: (context) => const PhoneOTP(),
-        OnBoarding.routeName: (context) => const OnBoarding(),
-      },
+    return OverlaySupport.global(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Meet Muslims',
+        theme: Provider.of<ThemeProvider>(context).getTheme(),
+        initialRoute: Landing.routeName,
+        routes: {
+          Landing.routeName: (context) => const Landing(),
+          SignIn.routeName: (context) => const SignIn(),
+          SignUpStepOne.routeName: (context) => const SignUpStepOne(),
+          SignUpStepTwo.routeName: (context) => const SignUpStepTwo(),
+          PhoneOTP.routeName: (context) => const PhoneOTP(),
+          OnBoarding.routeName: (context) => const OnBoarding(),
+        },
+      ),
     );
   }
 }

@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:meet_muslims_client/models/PreCheckEmail.dart';
-import 'package:meet_muslims_client/models/error.dart';
+import 'package:meet_muslims_client/models/AppNetworkReponse.dart';
 
 class UserProvider with ChangeNotifier {
   late String _id;
